@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HASSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CourseDetails">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="SemesterName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CourseNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CourseYear" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="int" />
+          <Property Name="CourseName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="InstructorName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="InstructorMailId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="University" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ClassDays" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClassStartTime" Type="smalldatetime" />
+          <Property Name="ClassEndTime" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="CourseGradingPolicy">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="EvaluationType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GradingWeight" Type="int" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="int" Nullable="false" />
+          <Property Name="RecordId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourseGradingSchedule">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="CourseGradingPolicyRecordId" Type="int" Nullable="false" />
+          <Property Name="ScheduledDateTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="SubmissionType" Type="int" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HASS.dbo.ExcelCreationNotifier' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ExcelCreationNotifier">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="CourseDetailsRecordId" />
+            <PropertyRef Name="NotificationGuid" />
+            <PropertyRef Name="DateAdded" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="FileName" />
+            <PropertyRef Name="University" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="int" Nullable="false" />
+          <Property Name="NotificationGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateAdded" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DownloadableLink" Type="nvarchar(max)" />
+          <Property Name="University" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HASS.dbo.HassAdmin' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HassAdmin">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="University" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="University" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HASS.dbo.hibernate_unique_key' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="hibernate_unique_key">
+          <Key>
+            <PropertyRef Name="next_hi" />
+          </Key>
+          <Property Name="next_hi" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="University" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salutation" Type="smallint" Nullable="false" />
+          <Property Name="Department" Type="smallint" Nullable="false" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="InstructorOfficeHours">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="FromHours" Type="int" Nullable="false" />
+          <Property Name="FromMin" Type="int" Nullable="false" />
+          <Property Name="ToHours" Type="int" Nullable="false" />
+          <Property Name="ToMin" Type="int" Nullable="false" />
+          <Property Name="Day" Type="smallint" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="int" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HASS.dbo.OneTimePasswordRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OneTimePasswordRequest">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="GeneratedCode" />
+            <PropertyRef Name="DateRequested" />
+            <PropertyRef Name="DateExpired" />
+            <PropertyRef Name="RequestStatus" />
+            <PropertyRef Name="RequestedEmailId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="GeneratedCode" Type="int" Nullable="false" />
+          <Property Name="DateRequested" Type="smalldatetime" Nullable="false" />
+          <Property Name="DateExpired" Type="smalldatetime" Nullable="false" />
+          <Property Name="RequestStatus" Type="int" Nullable="false" />
+          <Property Name="RequestedEmailId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentType" Type="smallint" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Semester" Type="smallint" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentCourses">
+          <Key>
+            <PropertyRef Name="StudentRecordId" />
+            <PropertyRef Name="CourseDetailsRecordId" />
+          </Key>
+          <Property Name="StudentRecordId" Type="int" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TentativeScheduleChanges">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="CurrentCourseDetailsRecordId" Type="int" Nullable="false" />
+          <Property Name="SuggestedTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="OriginalTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="int" Nullable="false" />
+          <Property Name="ConflictCourseDetailsRecordId" Type="int" Nullable="false" />
+          <Property Name="AssignmentType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateModified" Type="smalldatetime" />
+          <Property Name="ScheduleToChange" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CourseDetails_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="0..1" />
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseDetails">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ExcelCreationNotifier_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="ExcelCreationNotifier" Type="Self.ExcelCreationNotifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="ExcelCreationNotifier">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GradingPolicy_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="CourseGradingPolicy" Type="Self.CourseGradingPolicy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseGradingPolicy">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GradingSchedule_CourseGradingPolicy">
+          <End Role="CourseGradingPolicy" Type="Self.CourseGradingPolicy" Multiplicity="1" />
+          <End Role="CourseGradingSchedule" Type="Self.CourseGradingSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseGradingPolicy">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseGradingSchedule">
+              <PropertyRef Name="CourseGradingPolicyRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_InstructorOfficeHours_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="InstructorOfficeHours" Type="Self.InstructorOfficeHours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="InstructorOfficeHours">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_InstructorOfficeHours_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorOfficeHours" Type="Self.InstructorOfficeHours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="InstructorOfficeHours">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_StudentCourses_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="StudentCourses" Type="Self.StudentCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="StudentCourses">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_StudentCourses_Students">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentCourses" Type="Self.StudentCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="StudentCourses">
+              <PropertyRef Name="StudentRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="CurrentCourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_CourseDetails2">
+          <End Role="CourseDetails" Type="Self.CourseDetails" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="ConflictCourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_ScheduleToChange">
+          <End Role="CourseGradingSchedule" Type="Self.CourseGradingSchedule" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseGradingSchedule">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="ScheduleToChange" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HASSModelStoreContainer">
+          <EntitySet Name="CourseDetails" EntityType="Self.CourseDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseGradingPolicy" EntityType="Self.CourseGradingPolicy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseGradingSchedule" EntityType="Self.CourseGradingSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instructor" EntityType="Self.Instructor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InstructorOfficeHours" EntityType="Self.InstructorOfficeHours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentCourses" EntityType="Self.StudentCourses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TentativeScheduleChanges" EntityType="Self.TentativeScheduleChanges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExcelCreationNotifier" EntityType="Self.ExcelCreationNotifier" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ExcelCreationNotifier].[RecordId] AS [RecordId], 
+    [ExcelCreationNotifier].[CourseDetailsRecordId] AS [CourseDetailsRecordId], 
+    [ExcelCreationNotifier].[NotificationGuid] AS [NotificationGuid], 
+    [ExcelCreationNotifier].[DateAdded] AS [DateAdded], 
+    [ExcelCreationNotifier].[DateModified] AS [DateModified], 
+    [ExcelCreationNotifier].[Status] AS [Status], 
+    [ExcelCreationNotifier].[FileName] AS [FileName], 
+    [ExcelCreationNotifier].[DownloadableLink] AS [DownloadableLink], 
+    [ExcelCreationNotifier].[University] AS [University]
+    FROM [dbo].[ExcelCreationNotifier] AS [ExcelCreationNotifier]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HassAdmin" EntityType="Self.HassAdmin" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HassAdmin].[RecordId] AS [RecordId], 
+    [HassAdmin].[Id] AS [Id], 
+    [HassAdmin].[Password] AS [Password], 
+    [HassAdmin].[University] AS [University]
+    FROM [dbo].[HassAdmin] AS [HassAdmin]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="hibernate_unique_key" EntityType="Self.hibernate_unique_key" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [hibernate_unique_key].[next_hi] AS [next_hi]
+    FROM [dbo].[hibernate_unique_key] AS [hibernate_unique_key]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OneTimePasswordRequest" EntityType="Self.OneTimePasswordRequest" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OneTimePasswordRequest].[RecordId] AS [RecordId], 
+    [OneTimePasswordRequest].[GeneratedCode] AS [GeneratedCode], 
+    [OneTimePasswordRequest].[DateRequested] AS [DateRequested], 
+    [OneTimePasswordRequest].[DateExpired] AS [DateExpired], 
+    [OneTimePasswordRequest].[RequestStatus] AS [RequestStatus], 
+    [OneTimePasswordRequest].[RequestedEmailId] AS [RequestedEmailId]
+    FROM [dbo].[OneTimePasswordRequest] AS [OneTimePasswordRequest]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CourseDetails_Instructor" Association="Self.FK_CourseDetails_Instructor">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ExcelCreationNotifier_CourseDetails" Association="Self.fk_ExcelCreationNotifier_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="ExcelCreationNotifier" EntitySet="ExcelCreationNotifier" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GradingPolicy_CourseDetails" Association="Self.fk_GradingPolicy_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="CourseGradingPolicy" EntitySet="CourseGradingPolicy" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GradingSchedule_CourseGradingPolicy" Association="Self.fk_GradingSchedule_CourseGradingPolicy">
+            <End Role="CourseGradingPolicy" EntitySet="CourseGradingPolicy" />
+            <End Role="CourseGradingSchedule" EntitySet="CourseGradingSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="fk_InstructorOfficeHours_CourseDetails" Association="Self.fk_InstructorOfficeHours_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="InstructorOfficeHours" EntitySet="InstructorOfficeHours" />
+          </AssociationSet>
+          <AssociationSet Name="fk_InstructorOfficeHours_Instructor" Association="Self.fk_InstructorOfficeHours_Instructor">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="InstructorOfficeHours" EntitySet="InstructorOfficeHours" />
+          </AssociationSet>
+          <AssociationSet Name="fk_StudentCourses_CourseDetails" Association="Self.fk_StudentCourses_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="StudentCourses" EntitySet="StudentCourses" />
+          </AssociationSet>
+          <AssociationSet Name="fk_StudentCourses_Students" Association="Self.fk_StudentCourses_Students">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentCourses" EntitySet="StudentCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_CourseDetails" Association="Self.FK_TentativeScheduleChanges_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_CourseDetails2" Association="Self.FK_TentativeScheduleChanges_CourseDetails2">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_Instructor" Association="Self.FK_TentativeScheduleChanges_Instructor">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_ScheduleToChange" Association="Self.FK_TentativeScheduleChanges_ScheduleToChange">
+            <End Role="CourseGradingSchedule" EntitySet="CourseGradingSchedule" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HASSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CourseDetail">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="SemesterName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseYear" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="Int32" />
+          <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InstructorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InstructorMailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="University" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassDays" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClassStartTime" Type="DateTime" />
+          <Property Name="ClassEndTime" Type="DateTime" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_CourseDetails_Instructor" FromRole="CourseDetails" ToRole="Instructor" />
+          <NavigationProperty Name="ExcelCreationNotifiers" Relationship="Self.fk_ExcelCreationNotifier_CourseDetails" FromRole="CourseDetails" ToRole="ExcelCreationNotifier" />
+          <NavigationProperty Name="CourseGradingPolicies" Relationship="Self.fk_GradingPolicy_CourseDetails" FromRole="CourseDetails" ToRole="CourseGradingPolicy" />
+          <NavigationProperty Name="InstructorOfficeHours" Relationship="Self.fk_InstructorOfficeHours_CourseDetails" FromRole="CourseDetails" ToRole="InstructorOfficeHours" />
+          <NavigationProperty Name="TentativeScheduleChanges" Relationship="Self.FK_TentativeScheduleChanges_CourseDetails" FromRole="CourseDetails" ToRole="TentativeScheduleChanges" />
+          <NavigationProperty Name="TentativeScheduleChanges1" Relationship="Self.FK_TentativeScheduleChanges_CourseDetails2" FromRole="CourseDetails" ToRole="TentativeScheduleChanges" />
+          <NavigationProperty Name="Students" Relationship="Self.StudentCourses" FromRole="CourseDetails" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="CourseGradingPolicy">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="EvaluationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GradingWeight" Type="Int32" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseDetail" Relationship="Self.fk_GradingPolicy_CourseDetails" FromRole="CourseGradingPolicy" ToRole="CourseDetails" />
+          <NavigationProperty Name="CourseGradingSchedules" Relationship="Self.fk_GradingSchedule_CourseGradingPolicy" FromRole="CourseGradingPolicy" ToRole="CourseGradingSchedule" />
+        </EntityType>
+        <EntityType Name="CourseGradingSchedule">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="CourseGradingPolicyRecordId" Type="Int32" Nullable="false" />
+          <Property Name="ScheduledDateTime" Type="DateTime" Nullable="false" />
+          <Property Name="SubmissionType" Type="Int32" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseGradingPolicy" Relationship="Self.fk_GradingSchedule_CourseGradingPolicy" FromRole="CourseGradingSchedule" ToRole="CourseGradingPolicy" />
+          <NavigationProperty Name="TentativeScheduleChanges" Relationship="Self.FK_TentativeScheduleChanges_ScheduleToChange" FromRole="CourseGradingSchedule" ToRole="TentativeScheduleChanges" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salutation" Type="Int16" Nullable="false" />
+          <Property Name="Department" Type="Int16" Nullable="false" />
+          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CourseDetails" Relationship="Self.FK_CourseDetails_Instructor" FromRole="Instructor" ToRole="CourseDetails" />
+          <NavigationProperty Name="InstructorOfficeHours" Relationship="Self.fk_InstructorOfficeHours_Instructor" FromRole="Instructor" ToRole="InstructorOfficeHours" />
+          <NavigationProperty Name="TentativeScheduleChanges" Relationship="Self.FK_TentativeScheduleChanges_Instructor" FromRole="Instructor" ToRole="TentativeScheduleChanges" />
+        </EntityType>
+        <EntityType Name="InstructorOfficeHour">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="FromHours" Type="Int32" Nullable="false" />
+          <Property Name="FromMin" Type="Int32" Nullable="false" />
+          <Property Name="ToHours" Type="Int32" Nullable="false" />
+          <Property Name="ToMin" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="Int16" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="Int32" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseDetail" Relationship="Self.fk_InstructorOfficeHours_CourseDetails" FromRole="InstructorOfficeHours" ToRole="CourseDetails" />
+          <NavigationProperty Name="Instructor" Relationship="Self.fk_InstructorOfficeHours_Instructor" FromRole="InstructorOfficeHours" ToRole="Instructor" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DepartmentType" Type="Int16" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Semester" Type="Int16" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseDetails" Relationship="Self.StudentCourses" FromRole="Student" ToRole="CourseDetails" />
+        </EntityType>
+        <EntityType Name="TentativeScheduleChanx">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="CurrentCourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <Property Name="SuggestedTime" Type="DateTime" Nullable="false" />
+          <Property Name="OriginalTime" Type="DateTime" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="InstructorRecordId" Type="Int32" Nullable="false" />
+          <Property Name="ConflictCourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <Property Name="AssignmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateModified" Type="DateTime" />
+          <Property Name="ScheduleToChange" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourseDetail" Relationship="Self.FK_TentativeScheduleChanges_CourseDetails" FromRole="TentativeScheduleChanges" ToRole="CourseDetails" />
+          <NavigationProperty Name="CourseDetail1" Relationship="Self.FK_TentativeScheduleChanges_CourseDetails2" FromRole="TentativeScheduleChanges" ToRole="CourseDetails" />
+          <NavigationProperty Name="CourseGradingSchedule" Relationship="Self.FK_TentativeScheduleChanges_ScheduleToChange" FromRole="TentativeScheduleChanges" ToRole="CourseGradingSchedule" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_TentativeScheduleChanges_Instructor" FromRole="TentativeScheduleChanges" ToRole="Instructor" />
+        </EntityType>
+        <EntityType Name="ExcelCreationNotifier">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="CourseDetailsRecordId" />
+            <PropertyRef Name="NotificationGuid" />
+            <PropertyRef Name="DateAdded" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="FileName" />
+            <PropertyRef Name="University" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="CourseDetailsRecordId" Type="Int32" Nullable="false" />
+          <Property Name="NotificationGuid" Type="Guid" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" />
+          <Property Name="DateModified" Type="DateTime" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DownloadableLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CourseDetail" Relationship="Self.fk_ExcelCreationNotifier_CourseDetails" FromRole="ExcelCreationNotifier" ToRole="CourseDetails" />
+        </EntityType>
+        <EntityType Name="HassAdmin">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="University" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hibernate_unique_key">
+          <Key>
+            <PropertyRef Name="next_hi" />
+          </Key>
+          <Property Name="next_hi" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OneTimePasswordRequest">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="GeneratedCode" />
+            <PropertyRef Name="DateRequested" />
+            <PropertyRef Name="DateExpired" />
+            <PropertyRef Name="RequestStatus" />
+            <PropertyRef Name="RequestedEmailId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="GeneratedCode" Type="Int32" Nullable="false" />
+          <Property Name="DateRequested" Type="DateTime" Nullable="false" />
+          <Property Name="DateExpired" Type="DateTime" Nullable="false" />
+          <Property Name="RequestStatus" Type="Int32" Nullable="false" />
+          <Property Name="RequestedEmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CourseDetails_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="0..1" />
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseDetails">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ExcelCreationNotifier_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="1" />
+          <End Role="ExcelCreationNotifier" Type="Self.ExcelCreationNotifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="ExcelCreationNotifier">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GradingPolicy_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="1" />
+          <End Role="CourseGradingPolicy" Type="Self.CourseGradingPolicy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseGradingPolicy">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_InstructorOfficeHours_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="1" />
+          <End Role="InstructorOfficeHours" Type="Self.InstructorOfficeHour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="InstructorOfficeHours">
+              <PropertyRef Name="CourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_CourseDetails">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="CurrentCourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_CourseDetails2">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseDetails">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="ConflictCourseDetailsRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_GradingSchedule_CourseGradingPolicy">
+          <End Role="CourseGradingPolicy" Type="Self.CourseGradingPolicy" Multiplicity="1" />
+          <End Role="CourseGradingSchedule" Type="Self.CourseGradingSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseGradingPolicy">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="CourseGradingSchedule">
+              <PropertyRef Name="CourseGradingPolicyRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_ScheduleToChange">
+          <End Role="CourseGradingSchedule" Type="Self.CourseGradingSchedule" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourseGradingSchedule">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="ScheduleToChange" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_InstructorOfficeHours_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorOfficeHours" Type="Self.InstructorOfficeHour" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="InstructorOfficeHours">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TentativeScheduleChanges_Instructor">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="TentativeScheduleChanges" Type="Self.TentativeScheduleChanx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="RecordId" />
+            </Principal>
+            <Dependent Role="TentativeScheduleChanges">
+              <PropertyRef Name="InstructorRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StudentCourses">
+          <End Role="CourseDetails" Type="Self.CourseDetail" Multiplicity="*" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="HASSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CourseDetails" EntityType="Self.CourseDetail" />
+          <EntitySet Name="CourseGradingPolicies" EntityType="Self.CourseGradingPolicy" />
+          <EntitySet Name="CourseGradingSchedules" EntityType="Self.CourseGradingSchedule" />
+          <EntitySet Name="Instructors" EntityType="Self.Instructor" />
+          <EntitySet Name="InstructorOfficeHours" EntityType="Self.InstructorOfficeHour" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="TentativeScheduleChanges" EntityType="Self.TentativeScheduleChanx" />
+          <EntitySet Name="ExcelCreationNotifiers" EntityType="Self.ExcelCreationNotifier" />
+          <EntitySet Name="HassAdmins" EntityType="Self.HassAdmin" />
+          <EntitySet Name="hibernate_unique_key" EntityType="Self.hibernate_unique_key" />
+          <EntitySet Name="OneTimePasswordRequests" EntityType="Self.OneTimePasswordRequest" />
+          <AssociationSet Name="FK_CourseDetails_Instructor" Association="Self.FK_CourseDetails_Instructor">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ExcelCreationNotifier_CourseDetails" Association="Self.fk_ExcelCreationNotifier_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="ExcelCreationNotifier" EntitySet="ExcelCreationNotifiers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GradingPolicy_CourseDetails" Association="Self.fk_GradingPolicy_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="CourseGradingPolicy" EntitySet="CourseGradingPolicies" />
+          </AssociationSet>
+          <AssociationSet Name="fk_InstructorOfficeHours_CourseDetails" Association="Self.fk_InstructorOfficeHours_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="InstructorOfficeHours" EntitySet="InstructorOfficeHours" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_CourseDetails" Association="Self.FK_TentativeScheduleChanges_CourseDetails">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_CourseDetails2" Association="Self.FK_TentativeScheduleChanges_CourseDetails2">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="fk_GradingSchedule_CourseGradingPolicy" Association="Self.fk_GradingSchedule_CourseGradingPolicy">
+            <End Role="CourseGradingPolicy" EntitySet="CourseGradingPolicies" />
+            <End Role="CourseGradingSchedule" EntitySet="CourseGradingSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_ScheduleToChange" Association="Self.FK_TentativeScheduleChanges_ScheduleToChange">
+            <End Role="CourseGradingSchedule" EntitySet="CourseGradingSchedules" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="fk_InstructorOfficeHours_Instructor" Association="Self.fk_InstructorOfficeHours_Instructor">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="InstructorOfficeHours" EntitySet="InstructorOfficeHours" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TentativeScheduleChanges_Instructor" Association="Self.FK_TentativeScheduleChanges_Instructor">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="TentativeScheduleChanges" EntitySet="TentativeScheduleChanges" />
+          </AssociationSet>
+          <AssociationSet Name="StudentCourses" Association="Self.StudentCourses">
+            <End Role="CourseDetails" EntitySet="CourseDetails" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HASSModelStoreContainer" CdmEntityContainer="HASSEntities">
+          <EntitySetMapping Name="CourseDetails">
+            <EntityTypeMapping TypeName="HASSModel.CourseDetail">
+              <MappingFragment StoreEntitySet="CourseDetails">
+                <ScalarProperty Name="SemesterName" ColumnName="SemesterName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="CourseNumber" ColumnName="CourseNumber" />
+                <ScalarProperty Name="CourseYear" ColumnName="CourseYear" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="InstructorRecordId" ColumnName="InstructorRecordId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="InstructorName" ColumnName="InstructorName" />
+                <ScalarProperty Name="InstructorMailId" ColumnName="InstructorMailId" />
+                <ScalarProperty Name="University" ColumnName="University" />
+                <ScalarProperty Name="ClassDays" ColumnName="ClassDays" />
+                <ScalarProperty Name="ClassStartTime" ColumnName="ClassStartTime" />
+                <ScalarProperty Name="ClassEndTime" ColumnName="ClassEndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseGradingPolicies">
+            <EntityTypeMapping TypeName="HASSModel.CourseGradingPolicy">
+              <MappingFragment StoreEntitySet="CourseGradingPolicy">
+                <ScalarProperty Name="EvaluationType" ColumnName="EvaluationType" />
+                <ScalarProperty Name="GradingWeight" ColumnName="GradingWeight" />
+                <ScalarProperty Name="CourseDetailsRecordId" ColumnName="CourseDetailsRecordId" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseGradingSchedules">
+            <EntityTypeMapping TypeName="HASSModel.CourseGradingSchedule">
+              <MappingFragment StoreEntitySet="CourseGradingSchedule">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="CourseGradingPolicyRecordId" ColumnName="CourseGradingPolicyRecordId" />
+                <ScalarProperty Name="ScheduledDateTime" ColumnName="ScheduledDateTime" />
+                <ScalarProperty Name="SubmissionType" ColumnName="SubmissionType" />
+                <ScalarProperty Name="CourseDetailsRecordId" ColumnName="CourseDetailsRecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instructors">
+            <EntityTypeMapping TypeName="HASSModel.Instructor">
+              <MappingFragment StoreEntitySet="Instructor">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="University" ColumnName="University" />
+                <ScalarProperty Name="Salutation" ColumnName="Salutation" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstructorOfficeHours">
+            <EntityTypeMapping TypeName="HASSModel.InstructorOfficeHour">
+              <MappingFragment StoreEntitySet="InstructorOfficeHours">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="FromHours" ColumnName="FromHours" />
+                <ScalarProperty Name="FromMin" ColumnName="FromMin" />
+                <ScalarProperty Name="ToHours" ColumnName="ToHours" />
+                <ScalarProperty Name="ToMin" ColumnName="ToMin" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="InstructorRecordId" ColumnName="InstructorRecordId" />
+                <ScalarProperty Name="CourseDetailsRecordId" ColumnName="CourseDetailsRecordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="HASSModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DepartmentType" ColumnName="DepartmentType" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TentativeScheduleChanges">
+            <EntityTypeMapping TypeName="HASSModel.TentativeScheduleChanx">
+              <MappingFragment StoreEntitySet="TentativeScheduleChanges">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="CurrentCourseDetailsRecordId" ColumnName="CurrentCourseDetailsRecordId" />
+                <ScalarProperty Name="SuggestedTime" ColumnName="SuggestedTime" />
+                <ScalarProperty Name="OriginalTime" ColumnName="OriginalTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="InstructorRecordId" ColumnName="InstructorRecordId" />
+                <ScalarProperty Name="ConflictCourseDetailsRecordId" ColumnName="ConflictCourseDetailsRecordId" />
+                <ScalarProperty Name="AssignmentType" ColumnName="AssignmentType" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="ScheduleToChange" ColumnName="ScheduleToChange" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExcelCreationNotifiers">
+            <EntityTypeMapping TypeName="HASSModel.ExcelCreationNotifier">
+              <MappingFragment StoreEntitySet="ExcelCreationNotifier">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="CourseDetailsRecordId" ColumnName="CourseDetailsRecordId" />
+                <ScalarProperty Name="NotificationGuid" ColumnName="NotificationGuid" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="DownloadableLink" ColumnName="DownloadableLink" />
+                <ScalarProperty Name="University" ColumnName="University" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HassAdmins">
+            <EntityTypeMapping TypeName="HASSModel.HassAdmin">
+              <MappingFragment StoreEntitySet="HassAdmin">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="University" ColumnName="University" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hibernate_unique_key">
+            <EntityTypeMapping TypeName="HASSModel.hibernate_unique_key">
+              <MappingFragment StoreEntitySet="hibernate_unique_key">
+                <ScalarProperty Name="next_hi" ColumnName="next_hi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OneTimePasswordRequests">
+            <EntityTypeMapping TypeName="HASSModel.OneTimePasswordRequest">
+              <MappingFragment StoreEntitySet="OneTimePasswordRequest">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="GeneratedCode" ColumnName="GeneratedCode" />
+                <ScalarProperty Name="DateRequested" ColumnName="DateRequested" />
+                <ScalarProperty Name="DateExpired" ColumnName="DateExpired" />
+                <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
+                <ScalarProperty Name="RequestedEmailId" ColumnName="RequestedEmailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="StudentCourses" TypeName="HASSModel.StudentCourses" StoreEntitySet="StudentCourses">
+            <EndProperty Name="CourseDetails">
+              <ScalarProperty Name="RecordId" ColumnName="CourseDetailsRecordId" />
+            </EndProperty>
+            <EndProperty Name="Student">
+              <ScalarProperty Name="RecordId" ColumnName="StudentRecordId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
