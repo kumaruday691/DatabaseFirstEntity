@@ -15,7 +15,8 @@ namespace CodeFirstExistingDatabase.Migrations
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
+            Sql("INSERT INTO Categories (Name) VALUES('Web Development')");
+            Sql("INSERT INTO Categories (Name) VALUES('bew Development')");
         }
         
         public override void Down()
