@@ -75,6 +75,14 @@
     <Compile Include="Migrations\201901061620540_RenameTitleToNameInCoursesTable.Designer.cs">
       <DependentUpon>201901061620540_RenameTitleToNameInCoursesTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901061632230_DeleteCategoryFromCourseTable.cs" />
+    <Compile Include="Migrations\201901061632230_DeleteCategoryFromCourseTable.Designer.cs">
+      <DependentUpon>201901061632230_DeleteCategoryFromCourseTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901061634334_DeleteCategoryTable.cs" />
+    <Compile Include="Migrations\201901061634334_DeleteCategoryTable.Designer.cs">
+      <DependentUpon>201901061634334_DeleteCategoryTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PlutoContext.cs" />
     <Compile Include="Program.cs" />
@@ -100,6 +108,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901061620540_RenameTitleToNameInCoursesTable.resx">
       <DependentUpon>201901061620540_RenameTitleToNameInCoursesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901061632230_DeleteCategoryFromCourseTable.resx">
+      <DependentUpon>201901061632230_DeleteCategoryFromCourseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901061634334_DeleteCategoryTable.resx">
+      <DependentUpon>201901061634334_DeleteCategoryTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
